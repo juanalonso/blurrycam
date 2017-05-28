@@ -6,28 +6,27 @@ int camH = 720;
 
 int numPixels;
 int[][] backgroundPixels;
-int iCounter = 1, iSaveCounter = 1;
-int blurEveryNFrames = 30;
-int saveEveryNBlurs = 10;
+int iCounter, iSaveCounter;
+int blurEveryNFrames = 15;
+int saveEveryNBlurs = 5;
 boolean isRecording = false;
 
-String sTimestamp;
+String sTimestamp; 
 
 void setup() {
-
-  sTimestamp =  "" + year() + month() + day() + "_" + hour() + minute() + second();  
 
   size(1280, 720);
   background(0);
 
   //println(Capture.list());
-  video = new Capture(this,Capture.list()[0]);
+  video = new Capture(this, Capture.list()[0]);
   video.start();
 
   numPixels = camW * camH;
-  backgroundPixels = new int[numPixels][3];  
-
+    
   loadPixels();
+
+  resetSequence();
 }
 
 void draw() { 
@@ -76,7 +75,18 @@ void draw() {
 
 void keyPressed() {
 
-  if (key==' ' && !isRecording) {
-    isRecording = true;
+  if (key==' ') {
+    if (!isRecording) {
+      isRecording = true;
+    } else {
+      resetSequence();
+    }
   }
+}
+
+void resetSequence() {
+  sTimestamp =  "" + year() + month() + day() + "_" + hour() + minute() + second();  
+  iCounter = 1;
+  iSaveCounter = 1;
+  backgroundPixels = new int[numPixels][3];
 }
